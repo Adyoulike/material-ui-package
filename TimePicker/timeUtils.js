@@ -3,6 +3,11 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _parseInt = require('babel-runtime/core-js/number/parse-int');
+
+var _parseInt2 = _interopRequireDefault(_parseInt);
+
 exports.addHours = addHours;
 exports.addMinutes = addMinutes;
 exports.addSeconds = addSeconds;
@@ -10,6 +15,9 @@ exports.formatTime = formatTime;
 exports.rad2deg = rad2deg;
 exports.getTouchEventOffsetValues = getTouchEventOffsetValues;
 exports.isInner = isInner;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function addHours(d, hours) {
   var newDate = clone(d);
   newDate.setHours(d.getHours() + hours);
@@ -34,18 +42,26 @@ function clone(d) {
 
 /**
  * @param date [Date] A Date object.
+ * @param timezone [String] A Canonical timezone.
  * @param format [String] One of 'ampm', '24hr', defaults to 'ampm'.
  * @param pedantic [Boolean] Check time-picker/time-picker.jsx file.
  *
  * @return String A string representing the formatted time.
  */
-function formatTime(date) {
-  var format = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'ampm';
-  var pedantic = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+function formatTime(date, timeZone) {
+  var format = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'ampm';
+  var pedantic = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
 
   if (!date) return '';
-  var hours = date.getHours();
-  var mins = date.getMinutes().toString();
+  var dateParts = new Intl.DateTimeFormat('en-US', {
+    hour: 'numeric',
+    hour12: false,
+    minute: 'numeric',
+    timeZone: timeZone
+  }).formatToParts(date);
+
+  var hours = (0, _parseInt2.default)(dateParts[0].value, 10);
+  var mins = dateParts[2].value;
 
   if (format === 'ampm') {
     var isAM = hours < 12;

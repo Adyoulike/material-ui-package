@@ -16,6 +16,10 @@ var _objectWithoutProperties2 = require('babel-runtime/helpers/objectWithoutProp
 
 var _objectWithoutProperties3 = _interopRequireDefault(_objectWithoutProperties2);
 
+var _parseInt = require('babel-runtime/core-js/number/parse-int');
+
+var _parseInt2 = _interopRequireDefault(_parseInt);
+
 var _getPrototypeOf = require('babel-runtime/core-js/object/get-prototype-of');
 
 var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
@@ -83,8 +87,15 @@ var TimeDisplay = function (_Component) {
   }, {
     key: 'sanitizeTime',
     value: function sanitizeTime() {
-      var hour = this.props.selectedTime.getHours();
-      var min = this.props.selectedTime.getMinutes().toString();
+      var dateParts = new Intl.DateTimeFormat('en-US', {
+        hour: 'numeric',
+        hour12: false,
+        minute: 'numeric',
+        timeZone: this.props.timeZone
+      }).formatToParts(this.props.selectedTime);
+
+      var hour = (0, _parseInt2.default)(dateParts[0].value, 10);
+      var min = dateParts[2].value;
 
       if (this.props.format === 'ampm') {
         hour %= 12;
@@ -242,6 +253,7 @@ process.env.NODE_ENV !== "production" ? TimeDisplay.propTypes = {
   onSelectAffix: _propTypes2.default.func,
   onSelectHour: _propTypes2.default.func,
   onSelectMin: _propTypes2.default.func,
-  selectedTime: _propTypes2.default.object.isRequired
+  selectedTime: _propTypes2.default.object.isRequired,
+  timeZone: _propTypes2.default.string
 } : void 0;
 exports.default = TimeDisplay;

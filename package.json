@@ -1,7 +1,7 @@
 {
   "name": "material-ui",
   "author": "Material-UI Team",
-  "version": "0.20.2",
+  "version": "0.20.3",
   "description": "React Components that Implement Google's Material Design.",
   "main": "./index.js",
   "module": "./index.es.js",
@@ -22,6 +22,8 @@
   },
   "homepage": "http://material-ui.com/",
   "peerDependencies": {
+    "moment": "^2.24.0",
+    "moment-timezone": "^0.5.9",
     "react": "^15.4.0 || ^16.0.0",
     "react-dom": "^15.4.0 || ^16.0.0"
   },

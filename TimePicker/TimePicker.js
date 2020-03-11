@@ -170,8 +170,9 @@ var TimePicker = function (_Component) {
           pedantic = _props.pedantic,
           style = _props.style,
           textFieldStyle = _props.textFieldStyle,
+          timeZone = _props.timeZone,
           minutesStep = _props.minutesStep,
-          other = (0, _objectWithoutProperties3.default)(_props, ['autoOk', 'cancelLabel', 'defaultTime', 'dialogBodyStyle', 'dialogStyle', 'format', 'okLabel', 'onFocus', 'onClick', 'onShow', 'onDismiss', 'pedantic', 'style', 'textFieldStyle', 'minutesStep']);
+          other = (0, _objectWithoutProperties3.default)(_props, ['autoOk', 'cancelLabel', 'defaultTime', 'dialogBodyStyle', 'dialogStyle', 'format', 'okLabel', 'onFocus', 'onClick', 'onShow', 'onDismiss', 'pedantic', 'style', 'textFieldStyle', 'timeZone', 'minutesStep']);
       var prepareStyles = this.context.muiTheme.prepareStyles;
       var time = this.state.time;
 
@@ -182,7 +183,7 @@ var TimePicker = function (_Component) {
         _react2.default.createElement(_TextField2.default, (0, _extends3.default)({}, other, {
           style: textFieldStyle,
           ref: 'input',
-          value: time === emptyTime ? null : (0, _timeUtils.formatTime)(time, format, pedantic),
+          value: time === emptyTime ? null : (0, _timeUtils.formatTime)(time, timeZone, format, pedantic),
           onFocus: this.handleFocusInput,
           onClick: this.handleClickInput
         })),
@@ -198,7 +199,8 @@ var TimePicker = function (_Component) {
           cancelLabel: cancelLabel,
           autoOk: autoOk,
           style: dialogStyle,
-          minutesStep: minutesStep
+          minutesStep: minutesStep,
+          timeZone: timeZone
         })
       );
     }
@@ -215,6 +217,7 @@ TimePicker.defaultProps = {
   okLabel: 'OK',
   pedantic: false,
   style: {},
+  timezone: 'UTC',
   value: null,
   minutesStep: 1
 };
@@ -296,6 +299,10 @@ process.env.NODE_ENV !== "production" ? TimePicker.propTypes = {
    * Override the inline-styles of TimePicker's TextField element.
    */
   textFieldStyle: _propTypes2.default.object,
+  /**
+   * Set the timezone of the Time Picker.
+   */
+  timeZone: _propTypes2.default.string,
   /**
    * Sets the time for the Time Picker programmatically.
    */

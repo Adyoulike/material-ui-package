@@ -4,6 +4,10 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _parseInt = require('babel-runtime/core-js/number/parse-int');
+
+var _parseInt2 = _interopRequireDefault(_parseInt);
+
 var _getPrototypeOf = require('babel-runtime/core-js/object/get-prototype-of');
 
 var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
@@ -31,6 +35,10 @@ var _react2 = _interopRequireDefault(_react);
 var _propTypes = require('prop-types');
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _momentTimezone = require('moment-timezone');
+
+var _momentTimezone2 = _interopRequireDefault(_momentTimezone);
 
 var _TimeDisplay = require('./TimeDisplay');
 
@@ -82,6 +90,8 @@ var Clock = function (_Component) {
       _this.handleChangeHours(hours + 12, affix);
     }, _this.handleChangeHours = function (hours, finished) {
       var time = new Date(_this.state.selectedTime);
+      var tzOffset = _momentTimezone2.default.tz(time, _this.props.timeZone).utcOffset() / 60 * -1;
+
       var affix = void 0;
 
       if (typeof finished === 'string') {
@@ -95,7 +105,7 @@ var Clock = function (_Component) {
         hours += 12;
       }
 
-      time.setHours(hours);
+      time.setUTCHours(hours + tzOffset);
       _this.setState({
         selectedTime: time
       });
@@ -115,7 +125,7 @@ var Clock = function (_Component) {
       }
     }, _this.handleChangeMinutes = function (minutes, finished) {
       var time = new Date(_this.state.selectedTime);
-      time.setMinutes(minutes);
+      time.setUTCMinutes(minutes);
       _this.setState({
         selectedTime: time
       });
@@ -188,18 +198,25 @@ var Clock = function (_Component) {
         }
       };
 
+      var dateParts = new Intl.DateTimeFormat('en-US', {
+        hour: 'numeric',
+        hour12: false,
+        minute: 'numeric',
+        timeZone: this.props.timeZone
+      }).formatToParts(this.state.selectedTime);
+
       if (this.state.mode === 'hour') {
         clock = _react2.default.createElement(_ClockHours2.default, {
           key: 'hours',
           format: this.props.format,
           onChange: this.handleChangeHours,
-          initialHours: this.state.selectedTime.getHours()
+          initialHours: (0, _parseInt2.default)(dateParts[0].value, 10)
         });
       } else {
         clock = _react2.default.createElement(_ClockMinutes2.default, {
           key: 'minutes',
           onChange: this.handleChangeMinutes,
-          initialMinutes: this.state.selectedTime.getMinutes(),
+          initialMinutes: (0, _parseInt2.default)(dateParts[2].value, 10),
           step: this.props.minutesStep
         });
       }
@@ -214,7 +231,8 @@ var Clock = function (_Component) {
           affix: this.getAffix(),
           onSelectAffix: this.handleSelectAffix,
           onSelectHour: this.setMode.bind(this, 'hour'),
-          onSelectMin: this.setMode.bind(this, 'minute')
+          onSelectMin: this.setMode.bind(this, 'minute'),
+          timeZone: this.props.timeZone
         }),
         _react2.default.createElement(
           'div',
@@ -239,6 +257,7 @@ process.env.NODE_ENV !== "production" ? Clock.propTypes = {
   initialTime: _propTypes2.default.object,
   minutesStep: _propTypes2.default.number,
   onChangeHours: _propTypes2.default.func,
-  onChangeMinutes: _propTypes2.default.func
+  onChangeMinutes: _propTypes2.default.func,
+  timeZone: _propTypes2.default.string
 } : void 0;
 exports.default = Clock;

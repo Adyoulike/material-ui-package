@@ -131,7 +131,8 @@ var TimePickerDialog = function (_Component) {
           cancelLabel = _props.cancelLabel,
           style = _props.style,
           minutesStep = _props.minutesStep,
-          other = (0, _objectWithoutProperties3.default)(_props, ['bodyStyle', 'initialTime', 'onAccept', 'format', 'autoOk', 'okLabel', 'cancelLabel', 'style', 'minutesStep']);
+          timeZone = _props.timeZone,
+          other = (0, _objectWithoutProperties3.default)(_props, ['bodyStyle', 'initialTime', 'onAccept', 'format', 'autoOk', 'okLabel', 'cancelLabel', 'style', 'minutesStep', 'timeZone']);
 
 
       var styles = {
@@ -179,7 +180,8 @@ var TimePickerDialog = function (_Component) {
           format: format,
           initialTime: initialTime,
           onChangeMinutes: onClockChangeMinutes,
-          minutesStep: minutesStep
+          minutesStep: minutesStep,
+          timeZone: timeZone
         })
       );
     }
@@ -205,6 +207,7 @@ process.env.NODE_ENV !== "production" ? TimePickerDialog.propTypes = {
   onAccept: _propTypes2.default.func,
   onDismiss: _propTypes2.default.func,
   onShow: _propTypes2.default.func,
-  style: _propTypes2.default.object
+  style: _propTypes2.default.object,
+  timeZone: _propTypes2.default.string
 } : void 0;
 exports.default = TimePickerDialog;
